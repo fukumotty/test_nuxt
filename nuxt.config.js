@@ -42,15 +42,25 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/axios',
   ],
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
+      dark: false,
       themes: {
         dark: {
+          primary: colors.blue.darken2,
+          accent: colors.grey.darken3,
+          secondary: colors.amber.darken3,
+          info: colors.teal.lighten1,
+          warning: colors.amber.base,
+          error: colors.deepOrange.accent4,
+          success: colors.green.accent3
+        },
+        light: {
           primary: colors.blue.darken2,
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
@@ -65,5 +75,23 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-  }
+  },
+  axios: {
+    prefix: '/api',
+    proxy: true
+  },
+  proxy: {
+    '/apiHatena/': {
+      target: 'https://b.hatena.ne.jp',
+      pathRewrite: { '^/apiHatena/': '' },
+    },
+    '/apiYahooNews/': {
+      target: 'https://news.yahoo.co.jp',
+      pathRewrite: { '^/apiYahooNews/': '' },
+    },
+    '/apiITMedia/': {
+      target: 'https://rss.itmedia.co.jp',
+      pathRewrite: { '^/apiITMedia/': '' },
+    },
+  },
 }
