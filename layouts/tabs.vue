@@ -33,7 +33,6 @@ export default {
     return {
       preTabIndex: null,
       tabIndex: null,
-      tabItems: ['aa', 'bbb', 'ccc'],
       title: 'MyPage',
     }
   },
