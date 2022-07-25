@@ -11,6 +11,11 @@ const state = () => ({
             targetUrl: "/apiHatena/entrylist/it.rss"
         },
         {
+            name: "YahooNews（主要）",
+            category: "yahoo-news-top",
+            targetUrl: "/apiYahooNews/rss/topics/top-picks.xml"
+        },
+        {
             name: "YahooNews（国内）",
             category: "yahoo-news-domestic",
             targetUrl: "/apiYahooNews/rss/categories/domestic.xml"
