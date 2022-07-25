@@ -88,6 +88,8 @@ export default {
                 this.parseHatena(err, resultJson);
             } else if (category.includes('yahoo-news')) {
                 this.parseYahooNews(err, resultJson);
+            } else if (category.includes('it-media')) {
+                this.parseITMedia(err, resultJson);
             } else {
                 this.errorFlg = true;
                 console.log('no parse pattern.');
@@ -115,6 +117,26 @@ export default {
         },
         // Yahooニュースを整形
         parseYahooNews(err, resultJson) {
+            this.items.splice(0);
+            if (err) {
+                this.errorFlg = true;
+            } else {
+                const jsonItem = resultJson.rss.channel[0].item;
+                this.errorFlg = false;
+                for (const key in jsonItem) {
+                    const item = jsonItem[key];
+                    this.items.push({
+                        title: item.title === undefined ? "" : item.title[0],
+                        description: item.description === undefined ? "" : item.description[0],
+                        link: item.link === undefined ? "" : item.link[0],
+                        image: item.image === undefined ? "" : item.image[0],
+                        date: item.pubDate === undefined ? "" : this.dateformat(item.pubDate[0]),
+                    });
+                }
+            }
+        },
+        // ITMedia
+        parseITMedia(err, resultJson) {
             this.items.splice(0);
             if (err) {
                 this.errorFlg = true;
