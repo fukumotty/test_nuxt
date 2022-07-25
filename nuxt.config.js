@@ -42,6 +42,7 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/axios',
   ],
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
@@ -74,5 +75,15 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-  }
+  },
+  axios: {
+    prefix: '/api',
+    proxy: true
+  },
+  proxy: {
+    '/apiHatena/': {
+      target: 'https://b.hatena.ne.jp',
+      pathRewrite: { '^/apiHatena/': '' },
+    }
+  },
 }
