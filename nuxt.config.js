@@ -84,6 +84,10 @@ export default {
     '/apiHatena/': {
       target: 'https://b.hatena.ne.jp',
       pathRewrite: { '^/apiHatena/': '' },
+    },
+    '/apiYahooNews/': {
+      target: 'https://news.yahoo.co.jp',
+      pathRewrite: { '^/apiYahooNews/': '' },
     }
   },
 }
