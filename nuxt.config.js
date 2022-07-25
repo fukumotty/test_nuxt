@@ -88,6 +88,10 @@ export default {
     '/apiYahooNews/': {
       target: 'https://news.yahoo.co.jp',
       pathRewrite: { '^/apiYahooNews/': '' },
-    }
+    },
+    '/apiITMedia/': {
+      target: 'https://rss.itmedia.co.jp',
+      pathRewrite: { '^/apiITMedia/': '' },
+    },
   },
 }

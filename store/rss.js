@@ -25,6 +25,11 @@ const state = () => ({
             category: "yahoo-news-world",
             targetUrl: "/apiYahooNews/rss/categories/world.xml"
         },
+        {
+            name: "ITMedia（新着）",
+            category: "it-media-new",
+            targetUrl: "/apiITMedia/rss/2.0/news_bursts.xml"
+        },
     ]
 });
 
