@@ -9,7 +9,17 @@ const state = () => ({
             name: "はてな（新着）",
             category: "hatena-new",
             targetUrl: "/apiHatena/entrylist/it.rss"
-        }
+        },
+        {
+            name: "YahooNews（国内）",
+            category: "yahoo-news-domestic",
+            targetUrl: "/apiYahooNews/rss/categories/domestic.xml"
+        },
+        {
+            name: "YahooNews（国際）",
+            category: "yahoo-news-world",
+            targetUrl: "/apiYahooNews/rss/categories/world.xml"
+        },
     ]
 });
 
