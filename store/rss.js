@@ -1,4 +1,5 @@
 const state = () => ({
+    listDisplayFlg: false, // リスト表示切替フラグ
     rssInfo: [
         {
             name: "はてな（人気）",
@@ -33,6 +34,13 @@ const state = () => ({
     ]
 });
 
+const mutations = {
+    // リスト表示切替フラグを更新
+    setListDisplayFlg(state, value) {
+        state.listDisplayFlg = value;
+    }
+};
+
 const getters = {
     // indexから情報を取得
     getRssInfoFromIndex: state => (index) => {
@@ -45,10 +53,15 @@ const getters = {
     // categoryからindex情報を取得
     getRssInfoIndexFromCategory: state => (category) => {
         return state.rssInfo.findIndex(element => element.category === category);
+    },
+    // リスト表示切替フラグを取得
+    getListDisplayFlg: state => () => {
+        return state.listDisplayFlg;
     }
 };
 
 export default {
     state,
+    mutations,
     getters,
 }
