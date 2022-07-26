@@ -1,58 +1,53 @@
 <template>
     <v-row>
-        <v-col v-if="loading" align="center">
-            <!-- 読み込み時 -->
-            <v-progress-circular v-if='loading' :size="70" :width="7" indeterminate color="amber"></v-progress-circular>
-        </v-col>
-        <v-col v-else-if='errorFlg' align="center">
-            <!-- ロードエラー時 -->
-            <div class="display-1">読み込みに失敗しました。</div>
-            <p>{{ errorMessage }}</p>
-            <div>
-                <v-btn rounded color="primary" dark @click="load">
-                    再読込
-                </v-btn>
-            </div>
-        </v-col>
+        <!-- 読み込み時 -->
+        <my-loading-progress v-if="loading.flg" :color="loading.color" :width="loading.width" :size="loading.size">
+        </my-loading-progress>
+        <!--  Error発生時 -->
+        <my-error-view v-else-if='error.flg' :error-title="error.title" :error-message="error.message" @reload="load">
+        </my-error-view>
+        <!-- データ表示 -->
         <v-col v-else class="d-flex flex-wrap">
-            <!-- データ取得時 -->
-            <v-card v-for="item in items" :key="item.title" class="mx-auto mb-6" max-width="344" outlined>
-                <v-img v-if="item.image.length > 0" height="200" :src="item.image"></v-img>
-                <v-card-title>{{ item.title }}</v-card-title>
-                <v-card-text>
-                    <div class="my-4 text-subtitle-3">
-                        {{ item.description }}
-                    </div>
-                </v-card-text>
-                <v-divider class="mx-4"></v-divider>
-                <v-card-text>
-                    <div class="text-right">{{ item.date }}</div>
-                </v-card-text>
-                <v-card-actions>
-                    <v-btn color="cyan lighten-2" @click="detailLink(item)">
-                        詳細をみる
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
+            <my-card-view v-for="item in items" :key="item.title" :title="item.title" :description="item.description"
+                :date="item.date" :image-url="item.image" btn-text="詳細をみる" btn-color="blue darken-1"
+                @onButtonClick="detailLink(item)">
+            </my-card-view>
         </v-col>
     </v-row>
 </template>
 
 <script>
+import MyCardView from '~/components/MyCardView'
+import MyErrorView from '~/components/MyErrorView'
+import MyLoadingProgress from '~/components/MyLoadingProgress'
+
 const axiosObj = require('axios');
 const parseString = require('xml2js').parseString;
 
 export default {
     name: 'RssListPage',
+    components: {
+        MyCardView,
+        MyErrorView,
+        MyLoadingProgress,
+    },
     layout: 'tabs',
     validate({ params }) {
         return params.category !== undefined;
     },
     data() {
         return {
-            loading: true,
-            errorFlg: false,
-            errorMessage: null,
+            loading: {
+                flg: true,
+                size: 70,
+                width: 7,
+                color: "amber"
+            },
+            error: {
+                flg: false,
+                title: "エラー",
+                message: null,
+            },
             items: [],
         }
     },
@@ -67,19 +62,17 @@ export default {
             const category = this.$route.params.category;
             const rssInfo = this.$store.getters['rss/getRssInfoFromCategory'](category);
 
-            this.loading = true;
-            this.errorFlg = false;
-            this.errorMessage = null;
+            this.loading.flg = true;
+            this.initError();
 
             axiosObj.get(rssInfo.targetUrl).then((response) => {
                 parseString(response.data, (err, result) => {
                     this.parse(err, category, result);
                 });
             }).catch((err) => {
-                this.errorFlg = true;
-                this.errorMessage = err.errorMessage;
+                this.setError(err.errorMessage);
             }).finally(() => {
-                this.loading = false;
+                this.loading.flg = false;
             });
         },
         // パース処理
@@ -91,18 +84,16 @@ export default {
             } else if (category.includes('it-media')) {
                 this.parseITMedia(err, resultJson);
             } else {
-                this.errorFlg = true;
-                console.log('no parse pattern.');
+                this.setError('予期せぬエラーが発生しました。');
             }
         },
         // はてなブックマークを整形
         parseHatena(err, resultJson) {
             this.items.splice(0);
             if (err) {
-                this.errorFlg = true;
+                this.setError('予期せぬエラーが発生しました。');
             } else {
                 const jsonItem = resultJson["rdf:RDF"].item;
-                this.errorFlg = false;
                 for (const key in jsonItem) {
                     const item = jsonItem[key];
                     this.items.push({
@@ -119,10 +110,9 @@ export default {
         parseYahooNews(err, resultJson) {
             this.items.splice(0);
             if (err) {
-                this.errorFlg = true;
+                this.setError('予期せぬエラーが発生しました。');
             } else {
                 const jsonItem = resultJson.rss.channel[0].item;
-                this.errorFlg = false;
                 for (const key in jsonItem) {
                     const item = jsonItem[key];
                     this.items.push({
@@ -139,10 +129,9 @@ export default {
         parseITMedia(err, resultJson) {
             this.items.splice(0);
             if (err) {
-                this.errorFlg = true;
+                this.setError('予期せぬエラーが発生しました。');
             } else {
                 const jsonItem = resultJson.rss.channel[0].item;
-                this.errorFlg = false;
                 for (const key in jsonItem) {
                     const item = jsonItem[key];
                     this.items.push({
@@ -154,6 +143,14 @@ export default {
                     });
                 }
             }
+        },
+        initError() {
+            this.error.flg = false;
+            this.error.message = null;
+        },
+        setError(message) {
+            this.error.flg = true;
+            this.error.message = message;
         },
         // 日付フォーマット（yyyy/mm/dd hh:mm:ss）で日付の文字列を取得
         dateformat(dateString) {
