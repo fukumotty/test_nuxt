@@ -6,17 +6,23 @@
         <!--  Error発生時 -->
         <my-error-view v-else-if='error.flg' :error-title="error.title" :error-message="error.message" @reload="load">
         </my-error-view>
-        <!-- データ表示 -->
-        <v-col v-else class="d-flex flex-wrap">
+        <v-col v-if="!loading.flg && !error.flg && !listDisplayFlg" class="d-flex flex-wrap">
             <my-card-view v-for="item in items" :key="item.title" :title="item.title" :description="item.description"
                 :date="item.date" :image-url="item.image" btn-text="詳細をみる" btn-color="blue darken-1"
                 @onButtonClick="detailLink(item)">
             </my-card-view>
         </v-col>
+        <v-col v-if="!loading.flg && !error.flg && listDisplayFlg">
+            <my-banner-view v-for="item in items" :key="item.title" :title="item.title" :description="item.description"
+                :date="item.date" :image-url="item.image" btn-text="詳細をみる" btn-color="blue darken-1"
+                @onButtonClick="detailLink(item)">
+            </my-banner-view>
+        </v-col>
     </v-row>
 </template>
 
 <script>
+import MyBannerView from '~/components/MyBannerView'
 import MyCardView from '~/components/MyCardView'
 import MyErrorView from '~/components/MyErrorView'
 import MyLoadingProgress from '~/components/MyLoadingProgress'
@@ -27,6 +33,7 @@ const parseString = require('xml2js').parseString;
 export default {
     name: 'RssListPage',
     components: {
+        MyBannerView,
         MyCardView,
         MyErrorView,
         MyLoadingProgress,
@@ -37,6 +44,7 @@ export default {
     },
     data() {
         return {
+            listDisplayFlg: false,
             loading: {
                 flg: true,
                 size: 70,
