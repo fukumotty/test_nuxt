@@ -55,7 +55,6 @@ export default {
     },
     data() {
         return {
-            listDisplayFlg: false,
             loading: {
                 flg: true,
                 size: 70,
@@ -71,6 +70,14 @@ export default {
         }
     },
     computed: {
+        listDisplayFlg: {
+            get() {
+                return this.$store.getters['rss/getListDisplayFlg']();
+            },
+            set(value) {
+                this.$store.commit('rss/setListDisplayFlg', value);
+            }
+        },
         labelListDisplaySwitch() {
             return this.listDisplayFlg ? "グリッド表示に切替" : "リスト表示に切替"
         }
