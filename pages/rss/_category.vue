@@ -130,7 +130,7 @@ export default {
                         description: item.description === undefined ? "" : item.description[0],
                         link: item.link === undefined ? "" : item.link[0],
                         image: item.image === undefined ? "" : item.image[0],
-                        date: item["dc:date"] === undefined ? "" : this.dateformat(item["dc:date"][0]),
+                        date: item["dc:date"] === undefined ? "" : this.$dateformat_YYYYMMDD_HHmmsss(item["dc:date"][0]),
                     });
                 }
             }
@@ -149,7 +149,7 @@ export default {
                         description: item.description === undefined ? "" : item.description[0],
                         link: item.link === undefined ? "" : item.link[0],
                         image: item.image === undefined ? "" : item.image[0],
-                        date: item.pubDate === undefined ? "" : this.dateformat(item.pubDate[0]),
+                        date: item.pubDate === undefined ? "" : this.$dateformat_YYYYMMDD_HHmmsss(item.pubDate[0]),
                     });
                 }
             }
@@ -168,7 +168,7 @@ export default {
                         description: item.description === undefined ? "" : item.description[0],
                         link: item.link === undefined ? "" : item.link[0],
                         image: item.image === undefined ? "" : item.image[0],
-                        date: item.pubDate === undefined ? "" : this.dateformat(item.pubDate[0]),
+                        date: item.pubDate === undefined ? "" : this.$dateformat_YYYYMMDD_HHmmsss(item.pubDate[0]),
                     });
                 }
             }
@@ -180,16 +180,6 @@ export default {
         setError(message) {
             this.error.flg = true;
             this.error.message = message;
-        },
-        // 日付フォーマット（yyyy/mm/dd hh:mm:ss）で日付の文字列を取得
-        dateformat(dateString) {
-            const date = new Date(dateString);
-            return date.getFullYear().toString().padStart(2, '0') + "/"
-                + (date.getMonth() + 1).toString().padStart(2, '0') + "/"
-                + date.getDay().toString().padStart(2, '0') + " "
-                + date.getHours().toString().padStart(2, '0') + ":"
-                + date.getMinutes().toString().padStart(2, '0') + ":"
-                + date.getSeconds().toString().padStart(2, '0');
         },
         // 外部サイトを開く
         detailLink(item) {
