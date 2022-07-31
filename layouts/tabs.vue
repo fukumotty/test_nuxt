@@ -6,7 +6,7 @@
       <template #extension>
         <v-tabs v-model="tabIndex" align-with-title @change="onTabChange">
           <v-tabs-slider color="yellow"></v-tabs-slider>
-          <v-tab v-for="item in $store.state.rss.rssInfo" :key="item.name">
+          <v-tab v-for="item in $const.rssInfo" :key="item.name">
             {{ item.name }}
           </v-tab>
         </v-tabs>
