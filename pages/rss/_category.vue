@@ -88,7 +88,7 @@ export default {
         // データを取得する
         load() {
             const category = this.$route.params.category;
-            const rssInfo = this.$store.getters['rss/getRssInfoFromCategory'](category);
+            const rssInfo = this.$getRssInfoFromCategory(category);
 
             this.loading.flg = true;
             this.initError();
