@@ -25,7 +25,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~/plugins/days',
+    '~/plugins/axios.js',
+    '~/plugins/days.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -45,6 +46,23 @@ export default {
   modules: [
     '@nuxtjs/axios',
   ],
+  axios: {
+    proxy: true,
+  },
+  proxy: {
+    '/apiHatena/': {
+      target: 'https://b.hatena.ne.jp',
+      pathRewrite: { '^/apiHatena/': '' },
+    },
+    '/apiYahooNews/': {
+      target: 'https://news.yahoo.co.jp',
+      pathRewrite: { '^/apiYahooNews/': '' },
+    },
+    '/apiITMedia/': {
+      target: 'https://rss.itmedia.co.jp',
+      pathRewrite: { '^/apiITMedia/': '' },
+    },
+  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
@@ -76,23 +94,5 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-  },
-  axios: {
-    prefix: '/api',
-    proxy: true
-  },
-  proxy: {
-    '/apiHatena/': {
-      target: 'https://b.hatena.ne.jp',
-      pathRewrite: { '^/apiHatena/': '' },
-    },
-    '/apiYahooNews/': {
-      target: 'https://news.yahoo.co.jp',
-      pathRewrite: { '^/apiYahooNews/': '' },
-    },
-    '/apiITMedia/': {
-      target: 'https://rss.itmedia.co.jp',
-      pathRewrite: { '^/apiITMedia/': '' },
-    },
   },
 }
