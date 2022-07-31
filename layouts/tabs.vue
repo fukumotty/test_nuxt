@@ -6,7 +6,7 @@
       <template #extension>
         <v-tabs v-model="tabIndex" align-with-title @change="onTabChange">
           <v-tabs-slider color="yellow"></v-tabs-slider>
-          <v-tab v-for="item in $store.state.rss.rssInfo" :key="item.name">
+          <v-tab v-for="item in $const.rssInfo" :key="item.name">
             {{ item.name }}
           </v-tab>
         </v-tabs>
@@ -39,7 +39,7 @@ export default {
   created() {
     // 画面が作成された時
     const category = this.$route.params.category;
-    const targetIndex = this.$store.getters['rss/getRssInfoIndexFromCategory'](category);
+    const targetIndex = this.$getRssInfoIndexFromCategory(category);
     if (targetIndex !== -1) {
       this.tabIndex = targetIndex;
     }
@@ -51,7 +51,7 @@ export default {
     onTabChange() {
       if (this.preTabIndex !== this.tabIndex) {
         this.preTabIndex = this.tabIndex;
-        const rssInfo = this.$store.getters['rss/getRssInfoFromIndex'](this.tabIndex);
+        const rssInfo = this.$getRssInfoFromIndex(this.tabIndex);
         this.$router.push('/rss/' + rssInfo.category);
       }
     },

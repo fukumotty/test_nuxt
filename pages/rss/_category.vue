@@ -1,7 +1,8 @@
 <template>
     <v-row>
         <!-- 読み込み時 -->
-        <my-loading-progress v-if="loading.flg" :color="loading.color" :width="loading.width" :size="loading.size">
+        <my-loading-progress v-if='loadingFlg' :color="$const.loadingProgress.color"
+            :width="$const.loadingProgress.width" :size="$const.loadingProgress.size">
         </my-loading-progress>
         <!--  Error発生時 -->
         <my-error-view v-else-if='error.flg' :error-title="error.title" :error-message="error.message" @reload="load">
@@ -38,7 +39,6 @@ import MyCardView from '~/components/MyCardView'
 import MyErrorView from '~/components/MyErrorView'
 import MyLoadingProgress from '~/components/MyLoadingProgress'
 
-const axiosObj = require('axios');
 const parseString = require('xml2js').parseString;
 
 export default {
@@ -55,12 +55,7 @@ export default {
     },
     data() {
         return {
-            loading: {
-                flg: true,
-                size: 70,
-                width: 7,
-                color: "amber"
-            },
+            loadingFlg: true,
             error: {
                 flg: false,
                 title: "エラー",
@@ -89,19 +84,19 @@ export default {
         // データを取得する
         load() {
             const category = this.$route.params.category;
-            const rssInfo = this.$store.getters['rss/getRssInfoFromCategory'](category);
+            const rssInfo = this.$getRssInfoFromCategory(category);
 
-            this.loading.flg = true;
+            this.loadingFlg = true;
             this.initError();
 
-            axiosObj.get(rssInfo.targetUrl).then((response) => {
+            this.$axios.get(rssInfo.targetUrl).then((response) => {
                 parseString(response.data, (err, result) => {
                     this.parse(err, category, result);
                 });
             }).catch((err) => {
                 this.setError(err.errorMessage);
             }).finally(() => {
-                this.loading.flg = false;
+                this.loadingFlg = false;
             });
         },
         // パース処理
@@ -130,7 +125,7 @@ export default {
                         description: item.description === undefined ? "" : item.description[0],
                         link: item.link === undefined ? "" : item.link[0],
                         image: item.image === undefined ? "" : item.image[0],
-                        date: item["dc:date"] === undefined ? "" : this.dateformat(item["dc:date"][0]),
+                        date: item["dc:date"] === undefined ? "" : this.$dateformat_YYYYMMDD_HHmmsss(item["dc:date"][0]),
                     });
                 }
             }
@@ -149,7 +144,7 @@ export default {
                         description: item.description === undefined ? "" : item.description[0],
                         link: item.link === undefined ? "" : item.link[0],
                         image: item.image === undefined ? "" : item.image[0],
-                        date: item.pubDate === undefined ? "" : this.dateformat(item.pubDate[0]),
+                        date: item.pubDate === undefined ? "" : this.$dateformat_YYYYMMDD_HHmmsss(item.pubDate[0]),
                     });
                 }
             }
@@ -168,7 +163,7 @@ export default {
                         description: item.description === undefined ? "" : item.description[0],
                         link: item.link === undefined ? "" : item.link[0],
                         image: item.image === undefined ? "" : item.image[0],
-                        date: item.pubDate === undefined ? "" : this.dateformat(item.pubDate[0]),
+                        date: item.pubDate === undefined ? "" : this.$dateformat_YYYYMMDD_HHmmsss(item.pubDate[0]),
                     });
                 }
             }
@@ -180,16 +175,6 @@ export default {
         setError(message) {
             this.error.flg = true;
             this.error.message = message;
-        },
-        // 日付フォーマット（yyyy/mm/dd hh:mm:ss）で日付の文字列を取得
-        dateformat(dateString) {
-            const date = new Date(dateString);
-            return date.getFullYear().toString().padStart(2, '0') + "/"
-                + (date.getMonth() + 1).toString().padStart(2, '0') + "/"
-                + date.getDay().toString().padStart(2, '0') + " "
-                + date.getHours().toString().padStart(2, '0') + ":"
-                + date.getMinutes().toString().padStart(2, '0') + ":"
-                + date.getSeconds().toString().padStart(2, '0');
         },
         // 外部サイトを開く
         detailLink(item) {
