@@ -1,5 +1,11 @@
 export default ({ app }, inject) => {
     inject("const", {
+        // Progressの設定
+        loadingProgress: {
+            size: 70,       // 大きさ
+            width: 7,       // 線の幅
+            color: "amber"  // 色
+        },
         rssInfo: [
             {
                 name: "はてな（人気）",

@@ -1,7 +1,8 @@
 <template>
     <v-row>
         <!-- 読み込み時 -->
-        <my-loading-progress v-if="loading.flg" :color="loading.color" :width="loading.width" :size="loading.size">
+        <my-loading-progress v-if='loadingFlg' :color="$const.loadingProgress.color"
+            :width="$const.loadingProgress.width" :size="$const.loadingProgress.size">
         </my-loading-progress>
         <!--  Error発生時 -->
         <my-error-view v-else-if='error.flg' :error-title="error.title" :error-message="error.message" @reload="load">
@@ -54,12 +55,7 @@ export default {
     },
     data() {
         return {
-            loading: {
-                flg: true,
-                size: 70,
-                width: 7,
-                color: "amber"
-            },
+            loadingFlg: true,
             error: {
                 flg: false,
                 title: "エラー",
@@ -90,7 +86,7 @@ export default {
             const category = this.$route.params.category;
             const rssInfo = this.$getRssInfoFromCategory(category);
 
-            this.loading.flg = true;
+            this.loadingFlg = true;
             this.initError();
 
             this.$axios.get(rssInfo.targetUrl).then((response) => {
@@ -100,7 +96,7 @@ export default {
             }).catch((err) => {
                 this.setError(err.errorMessage);
             }).finally(() => {
-                this.loading.flg = false;
+                this.loadingFlg = false;
             });
         },
         // パース処理
