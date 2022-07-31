@@ -38,7 +38,6 @@ import MyCardView from '~/components/MyCardView'
 import MyErrorView from '~/components/MyErrorView'
 import MyLoadingProgress from '~/components/MyLoadingProgress'
 
-const axiosObj = require('axios');
 const parseString = require('xml2js').parseString;
 
 export default {
@@ -94,7 +93,7 @@ export default {
             this.loading.flg = true;
             this.initError();
 
-            axiosObj.get(rssInfo.targetUrl).then((response) => {
+            this.$axios.get(rssInfo.targetUrl).then((response) => {
                 parseString(response.data, (err, result) => {
                     this.parse(err, category, result);
                 });
