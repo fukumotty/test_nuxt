@@ -63,6 +63,10 @@ export default {
       target: 'https://rss.itmedia.co.jp',
       pathRewrite: { '^/apiITMedia/': '' },
     },
+    '/apiJSONplaceholder/': {
+      target: 'https://jsonplaceholder.typicode.com',
+      pathRewrite: { '^/apiJSONplaceholder/': '' },
+    },
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
