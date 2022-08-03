@@ -7,33 +7,37 @@
         <!--  Error発生時 -->
         <my-error-view v-else-if='error.flg' :error-title="error.title" :error-message="error.message" @reload="load">
         </my-error-view>
-        <v-row v-else-if="items.length > 0">
-            <v-col cols="12">
+        <v-container v-else-if="items.length > 0">
+            <v-row>
                 <v-switch v-model="listDisplayFlg" :label="labelListDisplaySwitch">
                 </v-switch>
-            </v-col>
-            <v-col v-if="listDisplayFlg">
-                <my-banner-view v-for="item in items" :key="item.title" :title="item.title"
-                    :description="item.description" :date="item.date" :image-url="item.image" btn-text="詳細をみる"
-                    btn-color="blue darken-1" @onButtonClick="detailLink(item)">
-                </my-banner-view>
-            </v-col>
-            <v-col v-else class="d-flex flex-wrap">
+            </v-row>
+            <v-row v-if="listDisplayFlg">
+                <v-col>
+                    <my-banner-view v-for="item in items" :key="item.title" :title="item.title"
+                        :description="item.description" :date="item.date" :image-url="item.image" btn-text="詳細をみる"
+                        btn-color="blue darken-1" @onButtonClick="detailLink(item)">
+                    </my-banner-view>
+                </v-col>
+            </v-row>
+            <v-row v-else class="d-flex flex-wrap">
                 <my-card-view v-for="item in items" :key="item.title" :title="item.title"
                     :description="item.description" :date="item.date" :image-url="item.image" btn-text="詳細をみる"
                     btn-color="blue darken-1" @onButtonClick="detailLink(item)">
                 </my-card-view>
-            </v-col>
-        </v-row>
-        <v-row v-else>
+            </v-row>
+        </v-container>
+        <v-container v-else>
             <v-col>
                 <div class="text-h3 mt-3">表示する内容がありません。</div>
             </v-col>
-        </v-row>
+        </v-container>
     </v-row>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 import MyBannerView from '~/components/MyBannerView'
 import MyCardView from '~/components/MyCardView'
 import MyErrorView from '~/components/MyErrorView'
@@ -53,7 +57,6 @@ export default {
     },
     data() {
         return {
-            loadingFlg: true,
             error: {
                 flg: false,
                 title: "エラー",
@@ -62,15 +65,21 @@ export default {
         }
     },
     computed: {
+        ...mapGetters({
+            loadingFlg: "view/getLoadingFlg",
+            getRssResultData: "rss/getRssResultData",
+            getListDisplayFlg: "rss/getListDisplayFlg"
+        }),
         items() {
-            return this.$store.getters['rss/getRssResultData'](this.$route.params.category);
+            console.log("computed->items");
+            return this.getRssResultData(this.$route.params.category);
         },
         listDisplayFlg: {
             get() {
-                return this.$store.getters['rss/getListDisplayFlg']();
+                return this.getListDisplayFlg;
             },
             set(value) {
-                this.$store.commit('rss/setListDisplayFlg', value);
+                this.updateListDisplayFlg(value);
             }
         },
         labelListDisplaySwitch() {
@@ -81,15 +90,17 @@ export default {
         this.load();
     },
     methods: {
+        ...mapActions({
+            updateLoadingFlg: "view/updateLoadingFlg",
+            updateListDisplayFlg: "rss/updateListDisplayFlg",
+            getRssData: "rss/getRssData"
+        }),
         // データを取得する
         load() {
             const category = this.$route.params.category;
-            this.loadingFlg = true;
             this.initError();
-            this.$store.dispatch('rss/getRssData', category).catch((err) => {
+            this.getRssData(category).catch((err) => {
                 this.setError(err.errorMessage);
-            }).finally(() => {
-                this.loadingFlg = false;
             });
         },
         initError() {

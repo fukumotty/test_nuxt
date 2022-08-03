@@ -63,6 +63,10 @@ export default {
       target: 'https://rss.itmedia.co.jp',
       pathRewrite: { '^/apiITMedia/': '' },
     },
+    '/apiJSONplaceholder/': {
+      target: 'https://jsonplaceholder.typicode.com',
+      pathRewrite: { '^/apiJSONplaceholder/': '' },
+    },
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
@@ -89,6 +93,9 @@ export default {
           error: colors.deepOrange.accent4,
           success: colors.green.accent3
         }
+      },
+      options: {
+        customProperties: true
       }
     }
   },
