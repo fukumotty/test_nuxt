@@ -15,13 +15,15 @@ const mutations = {
     },
     // リスト表示切替フラグを更新
     setRssResultData(state, { category, value }) {
-        state.rssResultData[category] = value === undefined ? [] : value;
+        const tmpObj = JSON.parse(JSON.stringify(state.rssResultData));
+        tmpObj[category] = value;
+        state.rssResultData = tmpObj;
     }
 };
 
 const getters = {
     // リスト表示切替フラグを取得
-    getListDisplayFlg: state => () => {
+    getListDisplayFlg(state) {
         return state.listDisplayFlg;
     },
 
@@ -29,15 +31,19 @@ const getters = {
      * categoryに合わせた結果を取得する
      **/
     getRssResultData: state => (category) => {
-        if (state.rssResultData[category] === undefined) {
-            return [];
-        } else {
+        if (Array.isArray(state.rssResultData[category])) {
             return state.rssResultData[category];
+        } else {
+            return [];
         }
     }
 };
 
 const actions = {
+    updateListDisplayFlg({ commit }, value) {
+        commit('setListDisplayFlg', value);
+    },
+
     /**
      * RSSデータを取得する
      **/
@@ -50,8 +56,8 @@ const actions = {
             .then(response => {
                 parseString(response.data, (err, result) => {
                     dispatch('parse', { err: err, category: category, json: result });
+                    return result;
                 });
-                return response;
             });
     },
     /**
