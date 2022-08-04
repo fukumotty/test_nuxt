@@ -17,11 +17,11 @@ export default function ({ $axios, store, redirect }) {
         if (code === 400) {
             redirect('/400')
         }
-        return Promise.reject(error.response);
+        return Promise.reject(error);
     });
 
     $axios.onResponseError((error) => {
         store.commit("view/setLoadingFlg", false);
-        return Promise.reject(error.response);
+        return Promise.reject(error);
     });
 }
