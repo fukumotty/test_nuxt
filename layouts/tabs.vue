@@ -1,7 +1,7 @@
 <template>
   <v-app dark>
     <v-app-bar color="cyan" fixed app dark>
-      <v-toolbar-title v-text="title"></v-toolbar-title>
+      <v-toolbar-title @click="$router.push('/')" v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>
       <template #extension>
         <v-tabs v-model="tabIndex" align-with-title @change="onTabChange">

@@ -2,7 +2,7 @@
   <v-app dark>
     <!-- ■Header -->
     <v-app-bar color="primary" fixed app dark>
-      <v-toolbar-title v-text="title" />
+      <v-toolbar-title @click="$router.push('/')" v-text="title" />
       <v-spacer />
     </v-app-bar>
 

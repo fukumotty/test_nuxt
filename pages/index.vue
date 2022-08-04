@@ -1,29 +1,52 @@
 <template>
-  <v-row>
-    <v-col>
-      <div class="text-h1">{{ title }}</div>
-      <div class="text-subtitle-1">{{ message }}</div>
-
-      <v-divider class="my-4"></v-divider>
-      <ol class="mx-y">
-        <li>
-          <router-link to="/rss/hatena-hot">はてな（人気）</router-link>
-        </li>
-        <li>
-          <router-link to="/rss/hatena-new">はてな（新着）</router-link>
-        </li>
-        <li>
-          <router-link to="/rss/yahoo-news-top">YahooNews（主要）</router-link>
-        </li>
-        <li>
-          <router-link to="/rss/yahoo-news-domestic">YahooNews（国内）</router-link>
-        </li>
-        <li>
-          <router-link to="/rss/yahoo-news-world">YahooNews（国際）</router-link>
-        </li>
-      </ol>
-    </v-col>
-  </v-row>
+  <v-container>
+    <v-row>
+      <v-col>
+        <div class="text-h1">{{ title }}</div>
+        <div class="text-subtitle-1">{{ message }}</div>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-card>
+          <v-card-title>RSS 記事一覧</v-card-title>
+          <v-card-subtitle>RSSのXMLを取得、表示したページ。</v-card-subtitle>
+          <v-card-text>
+            <ol class="mx-y">
+              <li>
+                <router-link to="/rss/hatena-hot">はてな（人気）</router-link>
+              </li>
+              <li>
+                <router-link to="/rss/yahoo-news-top">YahooNews（主要）</router-link>
+              </li>
+              <li>
+                <router-link to="/rss/yahoo-news-domestic">YahooNews（国内）</router-link>
+              </li>
+            </ol>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col>
+        <v-card>
+          <v-card-title>JSON Place holder</v-card-title>
+          <v-card-subtitle>JSON Place holderのAPIからデータを取得、表示したページ。</v-card-subtitle>
+          <v-card-text>
+            <ol class="mx-y">
+              <li>
+                <router-link to="/jsonplaceholder/posts">POSTS APIのデータを取得→表示したページ</router-link>
+              </li>
+              <li>
+                <router-link to="/jsonplaceholder/todos">TODOS APIのデータを取得→表示したページ</router-link>
+              </li>
+              <li>
+                <router-link to="/jsonplaceholder/albums">ALBUMS APIのデータを取得→表示したページ</router-link>
+              </li>
+            </ol>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -32,7 +55,7 @@ export default {
   data() {
     return {
       title: 'Hello',
-      message: '記事一覧へリンクします。',
+      message: 'ページにリンクします。',
     }
   },
   mounted() {
