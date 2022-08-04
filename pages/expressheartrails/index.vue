@@ -79,17 +79,6 @@ export default {
                 title: "エラー",
                 message: null,
             },
-            headers: [
-                {
-                    text: 'name', value: 'name',
-                },
-                {
-                    text: 'x', value: 'x',
-                },
-                {
-                    text: 'y', value: 'y',
-                },
-            ],
         }
     },
     computed: {
@@ -103,7 +92,6 @@ export default {
     },
     watch: {
         selectArea(newValue, oldValue) {
-            console.log("watch:selectArea:" + oldValue + " -> " + newValue + " =>data:seletArea:" + this.selectArea);
             if (newValue.length > 0) {
                 this.getPrefsInfo();
             } else {
@@ -111,7 +99,6 @@ export default {
             }
         },
         selectPref(newValue, oldValue) {
-            console.log("watch:selectPref:" + oldValue + " -> " + newValue + " =>data:selectPref:" + this.selectPref);
             if (newValue.length > 0) {
                 this.getLinesInfo();
             } else {
@@ -119,7 +106,6 @@ export default {
             }
         },
         selectLine(newValue, oldValue) {
-            console.log("watch:selectLine:" + oldValue + " -> " + newValue + " =>data:selectLine:" + this.selectLine);
             if (newValue.length > 0) {
                 this.getStationsInfo();
             } else {
