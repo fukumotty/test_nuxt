@@ -71,7 +71,6 @@ export default {
             getListDisplayFlg: "rss/getListDisplayFlg"
         }),
         items() {
-            console.log("computed->items");
             return this.getRssResultData(this.$route.params.category);
         },
         listDisplayFlg: {

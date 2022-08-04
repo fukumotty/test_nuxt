@@ -90,4 +90,4 @@ export default {
 td.header {
     background-color: var(--v-accent-base);
 }
-</style></style>
+</style>
