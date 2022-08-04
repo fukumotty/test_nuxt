@@ -42,13 +42,13 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import MyErrorView from '~/components/MyErrorView'
-// import MyLoadingProgress from '~/components/MyLoadingProgress'
+import MyLoadingProgress from '~/components/MyLoadingProgress'
 
 export default {
     name: 'JsonPlaceholderPostsPage',
     components: {
         MyErrorView,
-        // MyLoadingProgress,
+        MyLoadingProgress,
     },
     data() {
         return {
@@ -91,7 +91,7 @@ export default {
         load() {
             this.initError();
             this.getPosts().catch((err) => {
-                this.setError(err.errorMessage);
+                this.setError(err === undefined ? "" : err.errorMessage);
             });
         },
         initError() {
@@ -109,4 +109,3 @@ export default {
     }
 }
 </script>
-
