@@ -7,53 +7,41 @@
         <!--  Error発生時 -->
         <my-error-view v-else-if='error.flg' :error-title="error.title" :error-message="error.message" @reload="load">
         </my-error-view>
-        <v-container v-else-if="items.length > 0">
+        <v-container v-else-if="item.album !== undefined">
+            <v-row class="my-3">
+                <v-btn outlined color="primary" @click="detailAlbumLink()">album API</v-btn>
+                <v-btn outlined color="primary" @click="detailPhotosLink()">Photo API</v-btn>
+            </v-row>
+            <div class="text-h3">{{ item.album.title }}</div>
             <v-row>
                 <v-switch v-model="listDisplayFlg" :label="labelListDisplaySwitch">
                 </v-switch>
             </v-row>
-            <v-row v-if="listDisplayFlg">
-                <v-col>
-                    <my-banner-view v-for="item in items" :key="item.title" :title="item.title"
-                        :description="item.description" :date="item.date" :image-url="item.image" btn-text="詳細をみる"
-                        btn-color="blue darken-1" @onButtonClick="detailLink(item)">
-                    </my-banner-view>
-                </v-col>
-            </v-row>
-            <v-row v-else class="d-flex flex-wrap">
-                <my-card-view v-for="item in items" :key="item.title" :title="item.title"
-                    :description="item.description" :date="item.date" :image-url="item.image" btn-text="詳細をみる"
-                    btn-color="blue darken-1" @onButtonClick="detailLink(item)">
-                </my-card-view>
-            </v-row>
+            <my-photo-list-view v-if="listDisplayFlg" :items="item.photos"></my-photo-list-view>
+            <my-photo-card-list-view v-else :items="item.photos"></my-photo-card-list-view>
         </v-container>
         <v-container v-else>
-            <v-col>
-                <div class="text-h3 mt-3">表示する内容がありません。</div>
-            </v-col>
+            <v-row>
+                <div class="text-h4 mt-3">表示するデータがありません。</div>
+            </v-row>
         </v-container>
     </v-row>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-
-import MyBannerView from '~/components/MyBannerView'
-import MyCardView from '~/components/MyCardView'
 import MyErrorView from '~/components/MyErrorView'
 import MyLoadingProgress from '~/components/MyLoadingProgress'
+import MyPhotoListView from '~/components/MyPhotoListView'
+import MyPhotoCardListView from '~/components/MyPhotoCardListView'
 
 export default {
-    name: 'RssListPage',
+    name: 'JsonPlaceholderTodosPage',
     components: {
-        MyBannerView,
-        MyCardView,
         MyErrorView,
         MyLoadingProgress,
-    },
-    layout: 'tabs',
-    validate({ params }) {
-        return params.category !== undefined;
+        MyPhotoListView,
+        MyPhotoCardListView,
     },
     data() {
         return {
@@ -67,12 +55,9 @@ export default {
     computed: {
         ...mapGetters({
             loadingFlg: "view/getLoadingFlg",
-            getRssResultData: "rss/getRssResultData",
-            getListDisplayFlg: "rss/getListDisplayFlg"
+            item: "jsonplaceholder/getPhotoItem",
+            getListDisplayFlg: "jsonplaceholder/getListDisplayFlg"
         }),
-        items() {
-            return this.getRssResultData(this.$route.params.category);
-        },
         listDisplayFlg: {
             get() {
                 return this.getListDisplayFlg;
@@ -90,16 +75,14 @@ export default {
     },
     methods: {
         ...mapActions({
-            updateLoadingFlg: "view/updateLoadingFlg",
-            updateListDisplayFlg: "rss/updateListDisplayFlg",
-            getRssData: "rss/getRssData"
+            getPhotos: "jsonplaceholder/getPhotos",
+            updateListDisplayFlg: "jsonplaceholder/updateListDisplayFlg",
         }),
         // データを取得する
         load() {
-            const category = this.$route.params.category;
             this.initError();
-            this.getRssData(category).catch((err) => {
-                this.setError(err.errorMessage);
+            this.getPhotos(this.$route.params.albumId).catch((err) => {
+                this.setError(err === undefined ? "" : err.errorMessage);
             });
         },
         initError() {
@@ -111,10 +94,13 @@ export default {
             this.error.message = message;
         },
         // 外部サイトを開く
-        detailLink(item) {
-            window.open(item.link, '_blank');
+        detailAlbumLink() {
+            window.open('https://jsonplaceholder.typicode.com/albums/' + this.$route.params.albumId, '_blank');
+        },
+        // 外部サイトを開く
+        detailPhotosLink() {
+            window.open('https://jsonplaceholder.typicode.com/photos?albumId=' + this.$route.params.albumId, '_blank');
         }
     }
 }
 </script>
-

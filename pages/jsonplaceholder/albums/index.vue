@@ -15,7 +15,7 @@
             <v-row class="my-3">
                 <v-card>
                     <v-card-title>
-                        Data
+                        Albums LIST
                         <v-spacer></v-spacer>
                         <v-text-field v-model="search" append-icon="mdi-magnify" label="検索" single-line hide-details>
                         </v-text-field>
@@ -25,6 +25,11 @@
                         <template v-slot:[`item.userId`]="{ item }">
                             <nuxt-link :to="'/jsonplaceholder/user/' + item.userId">
                                 {{ item.userId }}
+                            </nuxt-link>
+                        </template>
+                        <template v-slot:[`item.title`]="{ item }">
+                            <nuxt-link :to="'/jsonplaceholder/albums/' + item.id">
+                                {{ item.title }}
                             </nuxt-link>
                         </template>
                     </v-data-table>
@@ -45,7 +50,7 @@ import MyErrorView from '~/components/MyErrorView'
 import MyLoadingProgress from '~/components/MyLoadingProgress'
 
 export default {
-    name: 'JsonPlaceholderPostsPage',
+    name: 'JsonPlaceholderAlbumsListPage',
     components: {
         MyErrorView,
         MyLoadingProgress,
@@ -62,10 +67,7 @@ export default {
                 },
                 {
                     text: 'title', value: 'title',
-                },
-                {
-                    text: 'body', value: 'body',
-                },
+                }
             ],
             error: {
                 flg: false,
@@ -76,7 +78,7 @@ export default {
     },
     computed: {
         ...mapGetters({
-            items: "jsonplaceholder/getPostItems",
+            items: "jsonplaceholder/getAlbumItems",
             loadingFlg: "view/getLoadingFlg",
         }),
     },
@@ -85,12 +87,12 @@ export default {
     },
     methods: {
         ...mapActions({
-            getPosts: "jsonplaceholder/getPosts",
+            getAlbums: "jsonplaceholder/getAlbums",
         }),
         // データを取得する
         load() {
             this.initError();
-            this.getPosts().catch((err) => {
+            this.getAlbums().catch((err) => {
                 this.setError(err === undefined ? "" : err.errorMessage);
             });
         },
@@ -104,7 +106,7 @@ export default {
         },
         // 外部サイトを開く
         detailLink() {
-            window.open('https://jsonplaceholder.typicode.com/posts', '_blank');
+            window.open('https://jsonplaceholder.typicode.com/albums', '_blank');
         }
     }
 }

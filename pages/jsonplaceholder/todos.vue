@@ -15,7 +15,7 @@
             <v-row class="my-3">
                 <v-card>
                     <v-card-title>
-                        Data
+                        TODO LIST
                         <v-spacer></v-spacer>
                         <v-text-field v-model="search" append-icon="mdi-magnify" label="検索" single-line hide-details>
                         </v-text-field>
@@ -26,6 +26,9 @@
                             <nuxt-link :to="'/jsonplaceholder/user/' + item.userId">
                                 {{ item.userId }}
                             </nuxt-link>
+                        </template>
+                        <template v-slot:[`item.completed`]="{ item }">
+                            <v-simple-checkbox v-model="item.completed" disabled></v-simple-checkbox>
                         </template>
                     </v-data-table>
                 </v-card>
@@ -45,7 +48,7 @@ import MyErrorView from '~/components/MyErrorView'
 import MyLoadingProgress from '~/components/MyLoadingProgress'
 
 export default {
-    name: 'JsonPlaceholderPostsPage',
+    name: 'JsonPlaceholderTodosPage',
     components: {
         MyErrorView,
         MyLoadingProgress,
@@ -64,7 +67,7 @@ export default {
                     text: 'title', value: 'title',
                 },
                 {
-                    text: 'body', value: 'body',
+                    text: 'completed', value: 'completed',
                 },
             ],
             error: {
@@ -76,7 +79,7 @@ export default {
     },
     computed: {
         ...mapGetters({
-            items: "jsonplaceholder/getPostItems",
+            items: "jsonplaceholder/getTodoItems",
             loadingFlg: "view/getLoadingFlg",
         }),
     },
@@ -85,12 +88,12 @@ export default {
     },
     methods: {
         ...mapActions({
-            getPosts: "jsonplaceholder/getPosts",
+            getTodos: "jsonplaceholder/getTodos",
         }),
         // データを取得する
         load() {
             this.initError();
-            this.getPosts().catch((err) => {
+            this.getTodos().catch((err) => {
                 this.setError(err === undefined ? "" : err.errorMessage);
             });
         },
@@ -104,7 +107,7 @@ export default {
         },
         // 外部サイトを開く
         detailLink() {
-            window.open('https://jsonplaceholder.typicode.com/posts', '_blank');
+            window.open('https://jsonplaceholder.typicode.com/todos', '_blank');
         }
     }
 }
