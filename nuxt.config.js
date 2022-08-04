@@ -67,6 +67,10 @@ export default {
       target: 'https://jsonplaceholder.typicode.com',
       pathRewrite: { '^/apiJSONplaceholder/': '' },
     },
+    '/apiExpressHeartrails/': {
+      target: 'https://express.heartrails.com',
+      pathRewrite: { '^/apiExpressHeartrails/': '' },
+    }
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
