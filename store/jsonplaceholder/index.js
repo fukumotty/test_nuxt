@@ -6,6 +6,8 @@ const state = () => ({
     todoItems: [],  // todoデータ
     albumItems: [], // アルバム
     photoItem: {},  // photoデータ
+    /** 表示管理用 **/
+    listDisplayFlg: false, // リスト表示切替フラグ
 });
 
 const mutations = {
@@ -42,6 +44,10 @@ const mutations = {
             photos: photoItems === undefined ? [] : photoItems
         };
     },
+    // リスト表示切替フラグを更新
+    setListDisplayFlg(state, value) {
+        state.listDisplayFlg = value;
+    },
 };
 
 const getters = {
@@ -74,6 +80,10 @@ const getters = {
     **/
     getPhotoItem(state, value) {
         return state.photoItem;
+    },
+    // リスト表示切替フラグを取得
+    getListDisplayFlg(state) {
+        return state.listDisplayFlg;
     },
 };
 
@@ -156,6 +166,12 @@ const actions = {
                 photoItems: responses[1].data
             });
         });
+    },
+    /**
+    * リスト表示切替フラグを更新する
+    **/
+    updateListDisplayFlg({ commit }, value) {
+        commit('setListDisplayFlg', value);
     },
 };
 
