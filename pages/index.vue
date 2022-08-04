@@ -7,7 +7,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col>
+      <v-col cols="6">
         <v-card>
           <v-card-title>RSS 記事一覧</v-card-title>
           <v-card-subtitle>RSSのXMLを取得、表示したページ。</v-card-subtitle>
@@ -26,7 +26,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col>
+      <v-col cols="6">
         <v-card>
           <v-card-title>JSON Place holder</v-card-title>
           <v-card-subtitle>JSON Place holderのAPIからデータを取得、表示したページ。</v-card-subtitle>
@@ -40,6 +40,21 @@
               </li>
               <li>
                 <router-link to="/jsonplaceholder/albums">ALBUMS APIのデータを取得→表示したページ</router-link>
+              </li>
+            </ol>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="6">
+        <v-card>
+          <v-card-title>駅情報表示</v-card-title>
+          <v-card-subtitle>「HeartRails Express」のAPIのデータを取得→表示したページ。</v-card-subtitle>
+          <v-card-text>
+            <ol class="mx-y">
+              <li>
+                <router-link to="/expressheartrails">駅情報表示ページ</router-link>
               </li>
             </ol>
           </v-card-text>
