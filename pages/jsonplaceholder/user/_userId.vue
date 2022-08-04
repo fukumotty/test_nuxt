@@ -67,7 +67,7 @@ export default {
         load() {
             this.initError();
             this.getUser(this.$route.params.userId).catch((err) => {
-                this.setError(err.errorMessage);
+                this.setError(err === undefined ? "" : err.errorMessage);
             });
         },
         initError() {
