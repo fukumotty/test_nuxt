@@ -1,7 +1,9 @@
 /* eslint-disable object-shorthand */
 const state = () => ({
-    postItems: [],
-    userInfos: []
+    /** データ **/
+    postItems: [],  // postデータ
+    userInfos: [],  // ユーザ情報
+    todoItems: [],  // todoデータ
 });
 
 const mutations = {
@@ -17,6 +19,12 @@ const mutations = {
     setUserInfos(state, value) {
         state.userInfos = value === undefined ? [] : value;
     },
+    /**
+     * todoItemsデータを更新する
+     **/
+    setTodoItems(state, value) {
+        state.todoItems = value === undefined ? [] : value;
+    },
 };
 
 const getters = {
@@ -31,6 +39,12 @@ const getters = {
      **/
     getUserInfos(state) {
         return state.userInfos;
+    },
+    /**
+     * todoItemsデータを取得する
+     **/
+    getTodoItems(state) {
+        return state.todoItems;
     },
 };
 
@@ -76,7 +90,15 @@ const actions = {
             }
         }
     },
-
+    /**
+    * Todosデータを取得する
+    **/
+    async getTodos({ commit }) {
+        return await this.$axios.get("/apiJSONplaceholder/todos")
+            .then(response => {
+                commit('setTodoItems', response.data);
+            });
+    },
 };
 
 export default {
