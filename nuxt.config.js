@@ -70,7 +70,11 @@ export default {
     '/apiExpressHeartrails/': {
       target: 'https://express.heartrails.com',
       pathRewrite: { '^/apiExpressHeartrails/': '' },
-    }
+    },
+    '/apiConnpass/': {
+      target: 'https://connpass.com/',
+      pathRewrite: { '^/apiConnpass/': '' },
+    },
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify

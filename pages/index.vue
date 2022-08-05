@@ -60,6 +60,19 @@
           </v-card-text>
         </v-card>
       </v-col>
+      <v-col cols="6">
+        <v-card>
+          <v-card-title>イベント情報表示</v-card-title>
+          <v-card-subtitle>Connpass」のAPIのデータを取得→表示したページ。</v-card-subtitle>
+          <v-card-text>
+            <ol class="mx-y">
+              <li>
+                <router-link to="/connpass">connpassイベント情報表示ページ</router-link>
+              </li>
+            </ol>
+          </v-card-text>
+        </v-card>
+      </v-col>
     </v-row>
   </v-container>
 </template>
