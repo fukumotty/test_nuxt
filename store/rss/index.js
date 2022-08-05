@@ -95,7 +95,7 @@ const actions = {
                     description: item.description === undefined ? "" : item.description[0],
                     link: item.link === undefined ? "" : item.link[0],
                     image: item.image === undefined ? "" : item.image[0],
-                    date: item["dc:date"] === undefined ? "" : this.$dateformat_YYYYMMDD_HHmmsss(item["dc:date"][0]),
+                    date: item["dc:date"] === undefined ? "" : this.$dateformat_YYYYMMDD_HHmmss(item["dc:date"][0]),
                 });
             }
         }
@@ -118,7 +118,7 @@ const actions = {
                     description: item.description === undefined ? "" : item.description[0],
                     link: item.link === undefined ? "" : item.link[0],
                     image: item.image === undefined ? "" : item.image[0],
-                    date: item.pubDate === undefined ? "" : this.$dateformat_YYYYMMDD_HHmmsss(item.pubDate[0]),
+                    date: item.pubDate === undefined ? "" : this.$dateformat_YYYYMMDD_HHmmss(item.pubDate[0]),
                 });
             }
         }
@@ -141,7 +141,7 @@ const actions = {
                     description: item.description === undefined ? "" : item.description[0],
                     link: item.link === undefined ? "" : item.link[0],
                     image: item.image === undefined ? "" : item.image[0],
-                    date: item.pubDate === undefined ? "" : this.$dateformat_YYYYMMDD_HHmmsss(item.pubDate[0]),
+                    date: item.pubDate === undefined ? "" : this.$dateformat_YYYYMMDD_HHmmss(item.pubDate[0]),
                 });
             }
         }
