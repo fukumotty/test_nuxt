@@ -145,6 +145,7 @@ export default {
     watch: {
     },
     mounted() {
+        this.clearEvents();
         this.updateLoadingFlg(false);
     },
     methods: {
