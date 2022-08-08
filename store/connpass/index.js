@@ -35,15 +35,13 @@ const actions = {
             order: 2,
             count: 100,
         };
-        const paramDates = this.$fromToDatesString(dates);
-        console.log("getEventInfo paramDates:" + paramDates);
-        if (paramDates.length > 0) {
-            params.ymd = paramDates;
+        const days = this.$fromToDays(dates);
+        if (days.length > 0) {
+            params.ymd = days.map(d => this.$dateformat_YYYYMMDD_widthout_delimiter(d)).join(',');
         }
         if (keyword !== undefined && keyword != null && keyword.length > 0) {
             params.keyword = keyword;
         }
-        console.log("getEventInfo:" + JSON.stringify(params));
         return await this.$axios.get("/apiConnpass/api/v1/event/", { params: params }).then(response => {
             commit('setEvents', response.data.events);
         });

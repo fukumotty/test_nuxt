@@ -72,10 +72,10 @@
                             <div v-else class="text-caption">{{ item.address }}</div>
                         </template>
                         <template v-slot:[`item.started_at`]="{ item }">
-                            {{ $dateformat_YYYYMMDD_HHmmss(item.started_at) }}
+                            {{ $dateformat_YYYYMMDD_hhmmss(item.started_at) }}
                         </template>
                         <template v-slot:[`item.ended_at`]="{ item }">
-                            {{ $dateformat_YYYYMMDD_HHmmss(item.ended_at) }}
+                            {{ $dateformat_YYYYMMDD_hhmmss(item.ended_at) }}
                         </template>
                         <template v-slot:[`item.event_url`]="{ item }">
                             <v-btn outlined color="primary" class="text-caption" @click="detailLink(item)">詳しくみる</v-btn>
@@ -136,7 +136,7 @@ export default {
             if (this.keyword.length === 0 && this.dates.length === 0) {
                 return "開催日（期間）、または、キーワードを入力してください。"
             } else if (this.dates.length === 2 &&
-                this.$getJpnDate_YYYYMMDD(this.dates[0]).getTime() > this.$getJpnDate_YYYYMMDD(this.dates[1]).getTime()) {
+                this.$dayjs_without_time(this.dates[1]).isBefore(this.$dayjs_without_time(this.dates[0]))) {
                 return "開催日（期間）のfrom-toの関係が不正です。";
             }
             return "";
