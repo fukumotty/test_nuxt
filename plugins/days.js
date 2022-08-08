@@ -1,71 +1,55 @@
+import dayjs from "dayjs";
+import "dayjs/locale/ja";
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(isSameOrBefore)
+
+dayjs.locale("ja");
+dayjs.tz.setDefault('Asia/Tokyo');
+
 export default ({ app }, inject) => {
-
-    inject("getJpnDate", dateString => {
-        let jpnDate;
-        if (dateString === null || dateString === undefined) {
-            jpnDate = new Date(new Date().toLocaleString({ timeZone: 'Asia/Tokyo' }));
+    inject("dayjs", string => {
+        let ret;
+        if (string === null || string === undefined) {
+            ret = dayjs();
         } else {
-            jpnDate = new Date(new Date(dateString).toLocaleString({ timeZone: 'Asia/Tokyo' }));
+            ret = dayjs(string);
         }
-        jpnDate.setMilliseconds(0);
-        return jpnDate;
+        ret.millisecond(0);
+        return ret;
     });
-
-    inject("getJpnDate_YYYYMMDD", dateString => {
-        const jpnDate = app.$getJpnDate(dateString);
-        jpnDate.setHours(0);
-        jpnDate.setMinutes(0);
-        jpnDate.setSeconds(0);
-        jpnDate.setMilliseconds(0);
-        return jpnDate;
-    });
-
-    inject("dateformat_YYYYMMDD_HHmmss", dateString => {
-        if (dateString === null || dateString === undefined) {
-            return '';
+    inject("dayjs_without_time", string => {
+        let ret;
+        if (string === null || string === undefined) {
+            ret = dayjs();
+        } else {
+            ret = dayjs(string);
         }
-        const jpnDate = app.$getJpnDate(dateString);
-        return jpnDate.getFullYear().toString().padStart(2, '0') + "/"
-            + (jpnDate.getMonth() + 1).toString().padStart(2, '0') + "/"
-            + jpnDate.getDate().toString().padStart(2, '0') + " "
-            + jpnDate.getHours().toString().padStart(2, '0') + ":"
-            + jpnDate.getMinutes().toString().padStart(2, '0') + ":"
-            + jpnDate.getSeconds().toString().padStart(2, '0');
+        ret.hour(0);
+        ret.minute(0);
+        ret.second(0);
+        ret.millisecond(0);
+        return ret;
     });
-    inject("dateformat_YYYYMMDD", dateString => {
-        if (dateString === null || dateString === undefined) {
-            return '';
-        }
-        const jpnDate = app.$getJpnDate_YYYYMMDD(dateString);
-        return jpnDate.getFullYear().toString().padStart(2, '0') + "/"
-            + (jpnDate.getMonth() + 1).toString().padStart(2, '0') + "/"
-            + jpnDate.getDate().toString().padStart(2, '0');
-    });
-
-    inject("dateformat_YYYYMMDD_widthout_Delimiter", dateString => {
-        if (dateString === null || dateString === undefined) {
-            return '';
-        }
-        const jpnDate = app.$getJpnDate_YYYYMMDD(dateString);
-        return jpnDate.getFullYear().toString().padStart(2, '0')
-            + (jpnDate.getMonth() + 1).toString().padStart(2, '0')
-            + jpnDate.getDate().toString().padStart(2, '0');
-    });
-
-    inject("fromToDatesString", dates => {
+    inject("fromToDays", dates => {
+        const ret = [];
         if (dates === undefined || dates === null || dates.length === 0) {
-            return '';
+            return ret;
         }
         if (dates.length === 1) {
-            return app.$dateformat_YYYYMMDD_widthout_Delimiter(dates[0]);
+            ret.push(app.$dayjs_without_time(dates[0]));
+            return ret;
         }
-        const tmpDate = app.$getJpnDate_YYYYMMDD(dates[0]);
-        const toDate = app.$getJpnDate_YYYYMMDD(dates[1]);
-        const retDates = [];
-        while (tmpDate.getTime() <= toDate.getTime()) {
-            retDates.push(app.$dateformat_YYYYMMDD_widthout_Delimiter(tmpDate));
-            tmpDate.setDate(tmpDate.getDate() + 1);
+        let tmpDate = app.$dayjs_without_time(dates[0]);
+        const toDate = app.$dayjs_without_time(dates[1]);
+        while (tmpDate.isSameOrBefore(toDate)) {
+            ret.push(dayjs(tmpDate));
+            tmpDate = tmpDate.add(1, 'day');
         }
-        return retDates.join(',');
+        return ret;
     });
 };

@@ -28,6 +28,7 @@ export default {
     '~/plugins/constants.js',
     '~/plugins/axios.js',
     '~/plugins/days.js',
+    '~/plugins/dayformat.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
