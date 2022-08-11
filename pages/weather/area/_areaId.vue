@@ -75,8 +75,8 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
     name: 'WeatherAreaPage',
-    validate({ params }) {
-        return params.areaId !== undefined && this.$getWeatherInfo(params.areaId) !== undefined;
+    validate({ app, params }) {
+        return params.areaId !== undefined && app.$getWeatherAreaInfo(params.areaId) !== undefined;
     },
     data() {
         return {
