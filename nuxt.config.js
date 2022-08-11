@@ -29,6 +29,7 @@ export default {
     '~/plugins/axios.js',
     '~/plugins/days.js',
     '~/plugins/dayformat.js',
+    '~/plugins/weather.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -75,6 +76,10 @@ export default {
     '/apiConnpass/': {
       target: 'https://connpass.com/',
       pathRewrite: { '^/apiConnpass/': '' },
+    },
+    '/apiWeather/': {
+      target: 'https://www.jma.go.jp/',
+      pathRewrite: { '^/apiWeather/': '' },
     },
   },
 
