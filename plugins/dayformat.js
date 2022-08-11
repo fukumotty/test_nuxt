@@ -12,6 +12,13 @@ export default ({ app }, inject) => {
         return app.$dayjs(dateString).format('YYYY/MM/DD');
     });
 
+    inject("dateformat_MMDD_ddd", dateString => {
+        if (dateString === null || dateString === undefined) {
+            return '';
+        }
+        return app.$dayjs(dateString).format('MM/DD(ddd)');
+    });
+
     inject("dateformat_YYYYMMDD_widthout_delimiter", dateString => {
         if (dateString === null || dateString === undefined) {
             return '';
